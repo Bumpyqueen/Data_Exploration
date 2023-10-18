@@ -11,5 +11,4 @@ to each other and so therefore, this two column will be used to fill each other 
 3. Creating different column for addresses and separating its values (OwnerAddress and PropertyAddress) into Address, City and State
 4. Correcting and Updating the SoldAsVacant column from 'Y' and 'N' to 'Yes' and 'No'
 5. Locating and Removing duplicates values with the help of CTE(common table expression, row_number() and partition by function
-6. In conclusion off this data Exploration, unused coumn were deleted/dropped and column dropped includes : The timestamp column, taxdistrict inclusive and likewise addresses column(property and owneraddress) which has been splitted into individual columns
-
+6. In conclusion of this data Exploration, unused coumn were deleted/dropped and column dropped includes : The timestamp column, taxdistrict inclusive and likewise addresses column(property and owneraddress) which has been splitted into individual columns
