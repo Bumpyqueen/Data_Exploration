@@ -1,7 +1,6 @@
-/* DATA EXPLORATION PROJECT ON NASHVILLE HOUSING DATA 
- CLEANING THE NASHVILLEHOUSING DATA IN SQL
-*/
--- CONVERTING SALEDATE COLUMN FROM A TIMESTAMP TO DATE FORMAT
+--DATA EXPLORATION PROJECT ON NASHVILLE HOUSING DATA 
+ --CLEANING THE NASHVILLEHOUSING DATA IN SQL
+
 SELECT *
 FROM NashvilleHousing
 
@@ -15,9 +14,6 @@ UPDATE NashvilleHousing
 SET NewSaleDate = CAST(SaleDate AS DATE) 
 
 ------------------------------------------------------------------------------------------------
-/* Observation made from the dataset below is that parcelID and propertyaddress has a repetition of values and it is linked
-to each other and so therefore, this two column will be used to fill each other incase of a null value
-*/
 -- USING THE ISNULL FUNCTION TO FILL EMPTY ADRESSES COLUMN AND UPDATNG DATASET
 
 -- PROPERTYADDRESS
@@ -36,10 +32,8 @@ ON nash.ParcelID = vil.ParcelID
 WHERE nash.PropertyAddress IS NULL AND vil.PropertyAddress IS NOT NULL
 
 ----------------------------------------------------------------------------------------
-/*
- CREATING DIFFERENT COLUMN FOR ADDRESSES AND SEPARATING ITS VALUES (OwnerAddress and PropertyAddress)
- INTO ADDRESS, CITY, AND STATE 
- */
+-- CREATING DIFFERENT COLUMN FOR ADDRESSES AND SEPARATING ITS VALUES (OwnerAddress and PropertyAddress)
+ --INTO ADDRESS, CITY, AND STATE 
 
 SELECT *
 FROM NashvilleHousing
@@ -112,30 +106,26 @@ SET SoldAsVacant = CASE
 	ELSE SoldAsVacant
 	END 
 -----------------------------------------------------------------------------------------
-	-- REMOVING DUPLICATES DATA USING CTE, ROW NUMBER AND PARTITION BY FUNCTION
+-- REMOVING DUPLICATES DATA USING CTE, ROW NUMBER AND PARTITION BY FUNCTION
 
 WITH DuplicateValues AS
 (SELECT *,
-       ROW_NUMBER() OVER 
-	         (PARTITION BY ParcelId,
-			               LandUse,
-						   PropertyAddress,
-						   SalePrice,
-						   LegalReference,
-						   OwnerName,
-						   NewSaleDate,
-						   OwnerAddress
-						   ORDER BY ParcelID) AS RowNumber        
+  ROW_NUMBER() OVER (PARTITION BY ParcelId,
+			          LandUse,
+				  PropertyAddress,
+				  SalePrice,
+				  LegalReference,
+				  OwnerName,
+				  NewSaleDate,
+				  OwnerAddress
+				  ORDER BY ParcelID) AS RowNumber        
 FROM NashvilleHousing) 
 --SELECT * FROM DuplicateValues WHERE RowNumber > 1
 DELETE FROM DuplicateValues
 WHERE RowNumber >1
 
 --------------------------------------------------------------------------------------
-/*IN CONCLUSION OF THIS DATA EXPLORATION, UNUSED COLUMNS WILL BE DELETED 
-AFTER THE TIMESTAMP WAS CONVERTED INTO DATE COLUMN, THE TIMESTAMP COLUMN WILL BE DROPPED, TAXDISTRICT INCLUSIVE AND LIKEWISE 
-ADDRESSES(PROPERTYADDRESS AND OWNERADDRESS) WHICH HAS BEEN SPLITTED INTO INDVIDUAL COLUMNS 
-*/
+--DROPPING UNUSED COLUMNS 
 ALTER TABLE NashvilleHousing
 DROP COLUMN SaleDate
 
